@@ -1,0 +1,6 @@
+[project]
+name = "nfl-ml-platform"
+version = "0.1.0"
+description = "Fantasy NFL analytics, machine learning, and AI reporting platform"
+requires-python = ">=3.12"
+dependencies = []
