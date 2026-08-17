@@ -46,3 +46,51 @@ def test_get_league_returns_league_data():
     assert session.requested_url == "https://example.com/league/12345"
     assert session.requested_timeout == DEFAULT_TIMEOUT_SECONDS
     assert response.raise_for_status_called
+
+
+def test_get_users_returns_user_data():
+    user_data = [
+        {
+            "user_id": "user-1",
+            "display_name": "Test Manager",
+        }
+    ]
+
+    response = FakeResponse(user_data)
+    session = FakeSession(response)
+
+    client = SleeperClient(
+        base_url="https://example.com",
+        session=session,
+    )
+
+    result = client.get_users("12345")
+
+    assert result == user_data
+    assert session.requested_url == "https://example.com/league/12345/users"
+    assert session.requested_timeout == DEFAULT_TIMEOUT_SECONDS
+    assert response.raise_for_status_called
+
+def test_get_matchups_returns_matchup_data():
+    matchup_data = [
+        {
+            "roster_id": 1,
+            "matchup_id": 4,
+            "points": 91.22,
+        }
+    ]
+
+    response = FakeResponse(matchup_data)
+    session = FakeSession(response)
+
+    client = SleeperClient(
+        base_url="https://example.com",
+        session=session,
+    )
+
+    result = client.get_matchups("12345", 8)
+
+    assert result == matchup_data
+    assert session.requested_url == "https://example.com/league/12345/matchups/8"
+    assert session.requested_timeout == DEFAULT_TIMEOUT_SECONDS
+    assert response.raise_for_status_called
