@@ -47,3 +47,16 @@ class SleeperClient:
         response.raise_for_status()
         
         return response.json()
+
+    def get_rosters(self, league_id: str) -> list[dict[str, Any]]:
+        url = f"{self.base_url}/league/{league_id}/rosters"
+
+        response = self.session.get(
+            url,
+            timeout=DEFAULT_TIMEOUT_SECONDS,
+        )
+
+        response.raise_for_status()
+
+        return response.json()
+

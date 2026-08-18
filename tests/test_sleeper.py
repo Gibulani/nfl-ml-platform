@@ -94,3 +94,28 @@ def test_get_matchups_returns_matchup_data():
     assert session.requested_url == "https://example.com/league/12345/matchups/8"
     assert session.requested_timeout == DEFAULT_TIMEOUT_SECONDS
     assert response.raise_for_status_called
+
+def test_get_rosters_returns_roster_data():
+    roster_data = [
+        {
+            "league_id": "12345",
+            "owner_id": "user-1",
+            "roster_id": 1,
+        }
+    ]
+
+    response = FakeResponse(roster_data)
+    session = FakeSession(response)
+
+    client = SleeperClient(
+        base_url="https://example.com",
+        session=session,
+    )
+
+    result = client.get_rosters("12345")
+
+    assert result == roster_data
+    assert session.requested_url == "https://example.com/league/12345/rosters"
+    assert session.requested_timeout == DEFAULT_TIMEOUT_SECONDS
+    assert response.raise_for_status_called
+
