@@ -5,11 +5,13 @@ from nfl_ml.transformations.sleeper_to_domain import (
     to_manager_season,
 )
 
+from nfl_ml.transformations.legacy_to_domain import to_legacy_league_season
+
 
 def test_to_league_season_transforms_sleeper_data():
     league_data = {
         "name": "Tyneside Superb Owl",
-        "season": "2025",
+        "season": 2025,
         "league_id": "2",
         "previous_league_id": "1",
         "settings": {
@@ -26,6 +28,24 @@ def test_to_league_season_transforms_sleeper_data():
     assert league_season.number_of_teams == 12
     assert league_season.number_of_playoff_teams == 6
     assert league_season.previous_sleeper_league_id == "1"
+
+def test_to_legacy_season_transforms_data():
+    legacy_data = {
+        "league_name": "Tyneside Superb Owl",
+        "season": 2019,        
+        "number_of_teams": 6,
+        "number_of_playoff_teams": 4,
+    }       
+
+    legacy_season = to_legacy_league_season(legacy_data)
+
+    assert legacy_season.season == 2019
+    assert legacy_season.league_name == "Tyneside Superb Owl"
+    assert legacy_season.number_of_teams == 6
+    assert legacy_season.number_of_playoff_teams == 4
+    assert legacy_season.sleeper_league_id is None
+    assert legacy_season.previous_sleeper_league_id is None
+  
 
 
 def test_to_manager_season_transforms_sleeper_data():
